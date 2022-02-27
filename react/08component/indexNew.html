@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello react</title>
+</head>
+<style>
+    .lei {
+        color: aqua;
+    }
+</style>
+<body>
+
+    <div id="test"></div>
+
+    <script type="text/javascript" src="../js/17.0.1/react.development.js"></script>
+    <script type="text/javascript" src="../js/17.0.1/react-dom.development.js"></script>
+    <script type="text/javascript" src="../js/17.0.1/babel.min.js"></script>
+
+    <script type="text/babel">
+        class Component extends React.Component {
+            state = {
+                isShow: false,
+                children: {
+                    "name": '89757',
+                    "sex": '男',
+                    "age": '100'
+                },
+                count: 1,
+                sum: 1
+            }
+            // UNSAFE_componentWillMount() {
+            //     // console.log('componentWillMount')
+            // }
+            render() {
+                return (
+                    <div>
+                        <div>新钩子：{this.state.count}</div>
+                        <button onClick={this.submit}>{this.state.isShow ? '取消':'确定'}</button>
+                        <button onClick={this.setValue}> +1 </button>
+                        <button onClick={this.destoryAll}>销毁</button>
+                        
+                    </div>
+                )
+            }
+            componentDidMount() {
+
+            }
+
+            // static getDerivedStateFromProps(props, state) {//新增钩子,静态方法  //派生状态
+            //     console.log('getDerivedStateFromProps', props, state)
+            //     return props
+            // }
+            static getDerivedStateFromProps() {//新增钩子,静态方法  //派生状态
+                // console.log('getDerivedStateFromProps')
+                return null
+            }
+
+            shouldComponentUpdate() {
+                // console.log('shouldComponentUpdate')
+                return true
+            }
+
+            getSnapshotBeforeUpdate() {//新增钩子
+                return '123123'
+            }
+
+            componentDidUpdate(prevProps, prevState, snapshot) { //更新前的值  getSnapshotBeforeUpdate传递的值
+                console.log(snapshot)
+            }
+            componentWillUnmount() {
+                clearInterval(this.timer)
+                // console.log('componentWillUnmount')
+            }
+            submit = () => {
+                this.setState({
+                    isShow: !this.state.isShow
+                })
+            }
+
+            setValue = () => {
+                this.setState({
+                    count: this.state.count + 1
+                })
+            }
+
+            destoryAll = () => {
+                ReactDOM.unmountComponentAtNode(document.getElementById('test'))
+            }
+        }
+
+        ReactDOM.render(<Component name="008" count="20"/>, document.getElementById('test'))
+        
+    </script>
+</body>
+</html>

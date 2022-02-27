@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello react</title>
+</head>
+<style>
+    .lei {
+        color: aqua;
+    }
+</style>
+<body>
+
+    <div id="test"></div>
+    <div id="test2"></div>
+    <div id="test3"></div>
+    <div id="test4"></div>
+    <div id="test5"></div>
+    <div id="test6"></div>
+    <div id="test7"></div>
+    <div id="test8"></div>
+
+    <!-- 引入核心库 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 操作DOM -->
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <!-- jsx转换js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+        // 严格模式babel
+
+        // React创建虚拟dom    document.createElement 真实dom
+        const VDOM = React.createElement('h1', {id: 'title'}, 'hello react')
+        // 标签，标签属性，内容
+        ReactDOM.render(VDOM, document.getElementById('test'))
+        // 虚拟dom，节点
+
+        function ComFun() {//没有实例，没有this
+            return (
+                <div>
+                    函数式组件
+                    <h3>hello</h3>
+                </div>
+            )
+        }
+        ReactDOM.render(<ComFun/>, document.getElementById('test3'))
+
+        class ComponentOne extends React.Component {
+            render() {
+                return <h1 className="lei">类式组件</h1>
+            }
+        }
+
+        ReactDOM.render(<ComponentOne/>, document.getElementById('test2'))
+        //ReactDOM.render 实现new Conponent() 操作并且通过实例调用render
+        //组件实例对象 状态state 驱动 页面 //类式组件 //hooks函数式组件
+
+        class Weather extends React.Component {
+            constructor(props) {
+                super(props)
+                this.state = {
+                    isGood: true
+                }
+                this.changeWeather = this.demo.bind(this)
+            }
+
+            render() {
+                // console.log(this)
+                return <h3 onClick={this.changeWeather}>今天天气很{ this.state.isGood ? '不错' : '糟糕' }</h3>
+            }
+
+            //类中方法默认开启局部严格模式,this => undefined
+            demo() {
+                console.log('demo')
+                console.log(this)
+                // this.state.isGood = !this.state.isGood
+                // 状态state不可直接更改，需借助内置api
+                this.setState({ //合并
+                    isGood: !this.state.isGood
+                })
+            }
+            changeWeather() {
+                console.log('changeWeather')
+            }
+        }
+        ReactDOM.render(<Weather/>, document.getElementById('test4'))
+
+        // function demo() {
+        //     console.log('点击')
+        // }
+        
+    </script>
+</body>
+</html>

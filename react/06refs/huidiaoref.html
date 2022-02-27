@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello react</title>
+</head>
+<style>
+    .lei {
+        color: aqua;
+    }
+</style>
+<body>
+
+    <div id="test"></div>
+    <div id="test2"></div>
+    <div id="test3"></div>
+    <div id="test4"></div>
+    <div id="test5"></div>
+    <div id="test6"></div>
+    <div id="test7"></div>
+    <div id="test8"></div>
+
+    <!-- 引入核心库 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 操作DOM -->
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <!-- jsx转换js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <!-- 对组件标签属性限制 -->
+    <script type="text/javascript" src="../js/prop-types.js"></script>
+
+    <script type="text/babel">
+        class Person extends React.Component {
+            state = {
+                str: true
+            }
+            render() {
+                // 内联 函数式ref，在render更新时会调用两次
+                // 第一次传递（null），清空ref
+                // 可忽略，无大影响
+
+                //定义为class的绑定函数可避免
+                return (
+                    <div>
+                        {/*<input ref={(c)=>{ this.inputOne = c }} type="text" id="inputOne"></input>*/}
+                        <input ref={this.refBind} type="text"></input>
+                        <button onClick={this.show}>按钮</button>
+                        <input ref={(c)=>{ this.inputTwo = c }} onBlur={this.showRight} type="text"></input>
+                        <button onClick={this.change}>更新按钮</button>
+                        <span ref={(c)=>{ this.span = c;console.log('123') }}>{this.state.str ? 'hao' : 'huai'}</span>
+                        { /* <div>1312121</div> */ }
+                    </div>
+                )
+            }
+
+            refBind = (c) => {
+                console.log('class的绑定函数,仅第一次会调用')
+                this.inputOne = c
+            }
+
+            show = () => {
+                console.log(this)
+                // alter(this.inputOne.value)
+                alert(inputOne.value)
+            }
+
+            showRight = () => {
+                alter(inputTwo.value)
+            }
+
+            change = () => {
+                this.setState({
+                    str: !this.state.str
+                })
+            }
+        }
+
+        ReactDOM.render(<Person name="jack"/>, document.getElementById('test'))
+        
+    </script>
+</body>
+</html>

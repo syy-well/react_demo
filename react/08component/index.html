@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello react</title>
+</head>
+<style>
+    .lei {
+        color: aqua;
+    }
+</style>
+<body>
+
+    <div id="test"></div>
+
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <script type="text/javascript" src="../js/prop-types.js"></script>
+
+    <script type="text/babel">
+        class Component extends React.Component {
+            state = {
+                isShow: false,
+                children: {
+                    "name": '89757',
+                    "sex": '男',
+                    "age": '100'
+                },
+                count: 1
+            }
+            componentWillMount() {
+                console.log('componentWillMount')
+            }
+            render() {
+                return (
+                    <div>
+                        <Son keyName="姓名" index='name' value={this.state.children.name}/>
+                        <Son keyName="性别" index='sex' value={this.state.children.sex}/>
+                        <Son keyName="年龄" index='age' value={this.state.children.age}/>
+                        <div>{this.state.count}</div>
+                        <button onClick={this.submit}>{this.state.isShow ? '取消':'确定'}</button>
+                        <button onClick={this.setValue}>赋值</button>
+                        <button onClick={this.destoryAll}>销毁</button>
+                        <div style={{display: this.state.isShow ? 'block':'none'}}>姓名:{}，性别:{}，年龄:{}</div>
+                        
+                    </div>
+                )
+            }
+            componentDidMount() {
+                console.log('componentDidMount')
+                this.timer = setInterval(() => {
+                    this.setState({
+                        count: this.state.count+1
+                    })
+                }, 1000)
+                this.timer
+            }
+            
+            componentWillUnmount() {
+                clearInterval(this.timer)
+                console.log('componentWillUnmount')
+            }
+            submit = () => {
+                this.setState({
+                    isShow: !this.state.isShow
+                })
+            }
+
+            setValue = () => {
+                this.setState({
+                    children: {
+                        "name": '20227',
+                        "sex": '女',
+                        "age": '100'
+                    }
+                })
+            }
+
+            destoryAll = () => {
+                ReactDOM.unmountComponentAtNode(document.getElementById('test'))
+            }
+        }
+
+        class Son extends React.Component {
+            render() {
+                return (
+                    <div>
+                        <span>{this.props.keyName}：</span>
+                        <input onChange={event => {this.changeInput( this.props.index,event)} } type="text"/>
+                    </div>
+                    
+                )
+            }
+            componentDidMount() {
+            }
+            componentWillReceiveProps() {
+                // console.log('componentWillReceiveProps')
+            }
+
+            shouldComponentUpdate() {
+                // console.log('shouldComponentUpdate')
+                return true
+            }
+            componentWillUpdate() {
+
+            }
+
+            
+            changeInput = (index, event) => {
+                this.setState({
+                    [index]: event.target.value
+                })
+            }
+        }
+
+        ReactDOM.render(<Component/>, document.getElementById('test'))
+        
+    </script>
+</body>
+</html>

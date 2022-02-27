@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello react</title>
+</head>
+<style>
+    .list {
+        width: 400px;
+        height: 300px;
+        background-color: aqua;
+        overflow: auto;
+    }
+    .new {
+        height: 60px;
+        border-bottom: 1px solid #fff;
+    }
+</style>
+<body>
+
+    <div id="test"></div>
+
+    <script type="text/javascript" src="../js/17.0.1/react.development.js"></script>
+    <script type="text/javascript" src="../js/17.0.1/react-dom.development.js"></script>
+    <script type="text/javascript" src="../js/17.0.1/babel.min.js"></script>
+
+    <script type="text/babel">
+        class Component extends React.Component {
+            state = {
+                newsList: []
+            }
+
+            render() {
+                return (
+                    <div>
+                        <div className="list" ref="list">
+                            {
+                                this.state.newsList.map((el, index)=> {
+                                    return <div key={index} className="new">{el}</div>
+                                })
+                            }
+                            
+                        </div>
+                        <button onClick={this.stop}>暂停</button>
+                        <button onClick={this.start}>继续</button>
+                    </div>
+                )
+            }
+            componentDidMount() {
+                this.timer = setInterval(()=> {
+                    const {newsList} = this.state
+                    let news = 'news'+ (newsList.length + 1)
+                    this.setState({
+                        newsList: [news, ...newsList]
+                    })
+                }, 1000)
+            }
+
+            shouldComponentUpdate() {
+                // console.log('shouldComponentUpdate')
+                return true
+            }
+
+            getSnapshotBeforeUpdate() {//新增钩子
+                return this.refs.list.scrollHeight
+            }
+
+            componentDidUpdate(prevProps, prevState, snapshot) { //更新前的值  getSnapshotBeforeUpdate传递的值
+                console.log(snapshot)
+                this.refs.list.scrollTop += this.refs.list.scrollHeight - snapshot
+            }
+            componentWillUnmount() {
+                clearInterval(this.timer)
+                // console.log('componentWillUnmount')
+            }
+
+            stop = ()=>{
+                clearInterval(this.timer)
+            }
+            start = ()=>{
+                if(this.timer) return
+                this.timer = setInterval(()=> {
+                    const {newsList} = this.state
+                    let news = 'news'+ (newsList.length + 1)
+                    this.setState({
+                        newsList: [news, ...newsList]
+                    })
+                }, 1000)
+            }
+        }
+
+        ReactDOM.render(<Component/>, document.getElementById('test'))
+        
+    </script>
+</body>
+</html>

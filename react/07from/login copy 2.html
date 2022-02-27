@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello react</title>
+</head>
+<style>
+    .lei {
+        color: aqua;
+    }
+</style>
+<body>
+
+    <div id="test"></div>
+    <div id="test2"></div>
+    <div id="test3"></div>
+    <div id="test4"></div>
+    <div id="test5"></div>
+    <div id="test6"></div>
+    <div id="test7"></div>
+    <div id="test8"></div>
+
+    <!-- 引入核心库 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 操作DOM -->
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <!-- jsx转换js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <!-- 对组件标签属性限制 -->
+    <script type="text/javascript" src="../js/prop-types.js"></script>
+
+    <script type="text/babel">
+        // 受控组件  ///随着输入改变状态   //省略ref
+        class Login extends React.Component {
+            state = {
+                name: '',
+                password: ''
+            }
+            render() {
+                return (
+                    <form action="" onSubmit={this.submit}>
+                        用户名:<input onChange={this.saveChange('name')} type="text"></input>
+                        密码:<input onChange={this.saveChange('password')} type="password"></input>
+                        <button>登录</button>
+                    </form>
+                )
+            }
+
+            submit = (event) => {
+                event.preventDefault() //阻止表单提交
+                // console.log(event.target)
+                // alert('用户名:'+ this.input1.value + '+ 密码:' + this.input2.value)
+
+                alert('用户名:'+ this.state.name + ' 密码:'+ this.state.password )
+            }
+
+            // 高级函数
+            // 接收的参数是函数 / 返回的函数是函数  =>  高阶函数
+            // 常见 Promise  setTimeOut  arr.map() 
+            saveChange = (dataType) => {
+                // console.log(dataType)
+                return (event) => {
+                    console.log(dataType)
+                    this.setState({
+                        [dataType]: event.target.value
+                        // dataType: event.target.value     //error
+                    })
+                }
+            }
+            // 函数柯里化   通过 调用函数 返回函数 的方式，通过多次接收参数，最后统一处理的 函数编码形式
+
+
+        }
+
+        ReactDOM.render(<Login/>, document.getElementById('test'))
+        
+    </script>
+</body>
+</html>

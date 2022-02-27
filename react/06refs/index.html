@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello react</title>
+</head>
+<style>
+    .lei {
+        color: aqua;
+    }
+</style>
+<body>
+
+    <div id="test"></div>
+    <div id="test2"></div>
+    <div id="test3"></div>
+    <div id="test4"></div>
+    <div id="test5"></div>
+    <div id="test6"></div>
+    <div id="test7"></div>
+    <div id="test8"></div>
+
+    <!-- 引入核心库 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 操作DOM -->
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <!-- jsx转换js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <!-- 对组件标签属性限制 -->
+    <script type="text/javascript" src="../js/prop-types.js"></script>
+
+    <script type="text/babel">
+        class Person extends React.Component {
+            // string类型ref过时
+            render() {
+                return (
+                    <div>
+                        <input ref="inputOne" type="text" id="inputOne"></input>
+                        <button onClick={this.show}>按钮</button>
+                        <input ref="inputTwo" onBlur={this.showRight} type="text"></input>
+                    </div>
+                )
+            }
+
+            show = () => {
+                // const a = document.getElementById('inputOne')
+                // console.log(a.value)
+                console.log(this)
+                console.log(this.refs['inputOne'])
+                alert(this.refs['inputOne'].value)
+            }
+
+            showRight = () => {
+                alert(this.refs['inputTwo'].value)
+            }
+        }
+
+        ReactDOM.render(<Person name="jack"/>, document.getElementById('test'))
+        
+    </script>
+</body>
+</html>
